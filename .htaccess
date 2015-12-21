@@ -1,0 +1,25 @@
+RewriteEngine On
+
+# Some hosts may require you to use the `RewriteBase` directive.
+# If you need to use the `RewriteBase` directive, it should be the
+# absolute physical path to the directory that contains this htaccess file.
+#
+RewriteBase /blank/
+RewriteCond %{REQUEST_FILENAME} !/admin/ [NC]
+RewriteCond %{THE_REQUEST} !nl/ [NC]
+RewriteCond %{REQUEST_FILENAME} !/sitebuild/ [NC]
+RewriteCond %{REQUEST_FILENAME} !/Routerunner/ [NC]
+RewriteCond %{REQUEST_FILENAME} !/scaffold/ [NC]
+RewriteCond %{REQUEST_FILENAME} !.jpg [NC]
+RewriteCond %{REQUEST_FILENAME} !.jpeg [NC]
+RewriteCond %{REQUEST_FILENAME} !.png [NC]
+RewriteCond %{REQUEST_FILENAME} !.gif [NC]
+RewriteCond %{REQUEST_FILENAME} !.ico [NC]
+RewriteCond %{REQUEST_FILENAME} !.svg [NC]
+RewriteCond %{REQUEST_FILENAME} !.js [NC]
+RewriteCond %{REQUEST_FILENAME} !.css [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]
+
+RewriteCond %{THE_REQUEST} nl/ [NC]
+RewriteRule ^nl/(.*)$ Routerunner/plugins/e_nl.php?p=$1 [QSA,L]
