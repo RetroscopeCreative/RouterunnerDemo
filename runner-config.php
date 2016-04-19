@@ -9,6 +9,7 @@
 $site = 'RouterunnerDemo';
 $host = 'dev.localhost';
 $mail = 'info@retroscope.hu';
+$backend_dir = 'RouterunnerCMS';
 
 $db_host = '127.0.0.1';
 $db_name = 'RouterunnerDemo';
@@ -59,7 +60,8 @@ $_SESSION["runner_config"] = array(
 	'SITEROOT' => '',
 	'DOCUMENT_ROOT' => $_SERVER['DOCUMENT_ROOT'] . '/',
 	'BASE' => 'http://' . $host . '/',
-	'BACKEND_ROOT' => 'RouterunnerCMS/',
+	'BACKEND_DIR' => $backend_dir,
+	'BACKEND_ROOT' => $backend_dir . '/',
 	'MEDIA_ROOT' => 'content/',
 	'UPLOAD_ROOT' => 'upload/',
 	'media_access' => array(
