@@ -47,7 +47,7 @@ $_SESSION["runner_config"] = array(
 	'debug' => false,
 	
 	// Logging
-	'log.writer' => '\RouterunnerCMS\Log',
+	'log.writer' => '\Routerunner\Log',
 	'log.enabled' => true,
 	
 	// View
