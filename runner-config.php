@@ -9,6 +9,7 @@
 $site = 'RouterunnerDemo';
 $host = 'dev.localhost';
 $mail = 'info@retroscope.hu';
+$backend_dir = 'RouterunnerCMS';
 
 $db_host = '127.0.0.1';
 $db_name = 'RouterunnerDemo';
@@ -32,7 +33,7 @@ $pwd_salt = substr(md5('RouterunnerDemo_Salt'), 0, 21);
 $pwd_logarithm = '09';
 $pwd_method = 'CRYPT_BLOWFISH';
 
-$_SESSION["runner_config"] = array(
+$runner_config = array(
 	// Application
 	'mode' => 'production',
 	'root' => 'desktop',
@@ -47,7 +48,7 @@ $_SESSION["runner_config"] = array(
 	'debug' => false,
 	
 	// Logging
-	'log.writer' => '\RouterunnerCMS\Log',
+	'log.writer' => '\Routerunner\Log',
 	'log.enabled' => true,
 	
 	// View
@@ -56,9 +57,11 @@ $_SESSION["runner_config"] = array(
 	// Site
 	'SITE' => $site,
 	'SITENAME' => $site,
-	'SITEROOT' => $site . '/',
-	'BASE' => 'http://' . $host . '/' . $site . '/',
-	'BACKEND_ROOT' => 'RouterunnerCMS/',
+	'SITEROOT' => '',
+	'DOCUMENT_ROOT' => $_SERVER['DOCUMENT_ROOT'] . '/',
+	'BASE' => 'http://' . $host . '/',
+	'BACKEND_DIR' => $backend_dir,
+	'BACKEND_ROOT' => $backend_dir . '/',
 	'MEDIA_ROOT' => 'content/',
 	'UPLOAD_ROOT' => 'upload/',
 	'media_access' => array(
@@ -632,14 +635,28 @@ if (!function_exists("backend_mode")) {
 			&& backend_crypt($_SESSION[$backend_session]) === $_GET[$backend_uri]
 		) {
 			$mode = "backend";
-			unset($_GET[$backend_uri], $_SESSION[$backend_session]);
+			//unset($_GET[$backend_uri], $_SESSION[$backend_session]);
 		} elseif (class_exists("user") && \user::me()) {
 			$mode = "backend";
+		}
+		$unique = false;
+		if (!isset($_SESSION[$backend_session])) {
 			$unique = uniqid();
 			$_SESSION[$backend_session] = $unique;
+		} elseif (isset($_SESSION[$backend_session])) {
+			$unique = $_SESSION[$backend_session];
+		}
+		if ($unique && $mode == 'backend') {
 			$code = str_replace("'", "\'", backend_crypt($unique));
-			echo <<<HTML
+			$_SESSION['routerunner-open-script'] = <<<HTML
 <script>
+	function routerunner_attach(id) {
+		if (window.parent && typeof window.parent.routerunner_attach == "function") {
+			window.parent.routerunner_attach(id, window);
+		} else if (window.top && typeof window.top.routerunner_attach == "function") {
+			window.top.routerunner_attach(id, window);
+		}
+	}
 	window.routerunner_backend = '{$code}';
 	if (window.settings) {
 		window.settings.backend_uri = '{$backend_uri}'
@@ -657,6 +674,8 @@ HTML;
 		return $mode;
 	}
 }
+
+$_SESSION["runner_config"] = $runner_config;
 
 unset($site, $host, $mail, $db_host, $db_name, $db_user, $db_pass, $mail_host, $mail_smtpauth, $mail_port, $mail_user,
 	$mail_pass, $mail_smtpsecure, $mail_from, $mail_fromname, $mail_subject, $token_session, $token_cookie,
