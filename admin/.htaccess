@@ -5,7 +5,7 @@ RewriteEngine On
 # absolute physical path to the directory that contains this htaccess file.
 #
 
-RewriteBase /RouterunnerDemo/admin/
+RewriteBase /admin/
 RewriteCond %{REQUEST_FILENAME} admin/ [NC]
 RewriteCond %{REQUEST_FILENAME} !/scaffold/ [NC]
 RewriteCond %{REQUEST_FILENAME} !-f

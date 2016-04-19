@@ -12,6 +12,10 @@
 <?php
 \runner::route("foot");
 ?>
+<?php
+echo \runner::js_after();
+?>
+<noscript>Nincs engedélyezve a Javascript használata! Enélkül az oldal nem működőképes!</noscript>
 
 </body>
 </html>
