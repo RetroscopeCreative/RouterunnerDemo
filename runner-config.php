@@ -56,8 +56,9 @@ $_SESSION["runner_config"] = array(
 	// Site
 	'SITE' => $site,
 	'SITENAME' => $site,
-	'SITEROOT' => $site . '/',
-	'BASE' => 'http://' . $host . '/' . $site . '/',
+	'SITEROOT' => '',
+	'DOCUMENT_ROOT' => $_SERVER['DOCUMENT_ROOT'] . '/',
+	'BASE' => 'http://' . $host . '/',
 	'BACKEND_ROOT' => 'RouterunnerCMS/',
 	'MEDIA_ROOT' => 'content/',
 	'UPLOAD_ROOT' => 'upload/',
